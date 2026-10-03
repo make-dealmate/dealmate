@@ -1,0 +1,27 @@
+# Local business-document drafts, exports, and backups
+/_workspace/
+/output/
+*.doc
+*.docx
+*.pdf
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+
+# Local credentials and private key files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies, caches, and operating-system files
+node_modules/
+.vercel/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

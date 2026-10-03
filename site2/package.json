@@ -1,0 +1,10 @@
+{
+  "name": "dealmate-site2",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dealmate 두 번째 홈페이지 디자인 초안",
+  "scripts": {
+    "dev": "node scripts/preview.mjs",
+    "preview": "node scripts/preview.mjs"
+  }
+}
