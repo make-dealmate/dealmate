@@ -2,6 +2,8 @@ import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Readable } from 'node:stream';
+import { handleAuth } from '../../server/auth.mjs';
 
 const publicDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../public');
 const port = Number(process.argv[2] || 4174);
@@ -15,6 +17,23 @@ const contentTypes = {
 };
 
 http.createServer(async (request, response) => {
+  if (request.url.split('?')[0] === '/api/auth') {
+    try {
+      const init = { method: request.method, headers: request.headers };
+      if (!['GET', 'HEAD'].includes(request.method)) {
+        init.body = Readable.toWeb(request);
+        init.duplex = 'half';
+      }
+      const result = await handleAuth(new Request(`http://${request.headers.host}${request.url}`, init));
+      result.headers.forEach((value, key) => { if (key !== 'set-cookie') response.setHeader(key, value); });
+      if (result.headers.getSetCookie().length) response.setHeader('Set-Cookie', result.headers.getSetCookie());
+      response.writeHead(result.status);
+      response.end(Buffer.from(await result.arrayBuffer()));
+    } catch {
+      response.writeHead(500, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }).end('{"error":"server_error"}');
+    }
+    return;
+  }
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     response.writeHead(405, { Allow: 'GET, HEAD' }).end();
     return;
@@ -30,12 +49,14 @@ http.createServer(async (request, response) => {
     response.writeHead(200, {
       'Content-Type': contentTypes[extname(file)] || 'application/octet-stream',
       'Cache-Control': 'no-store',
-      'X-Content-Type-Options': 'nosniff'
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups'
     });
     response.end(request.method === 'HEAD' ? undefined : contents);
   } catch {
     response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('페이지를 찾을 수 없습니다.');
   }
 }).listen(port, '127.0.0.1', () => {
-  console.log(`Dealmate design 02: http://127.0.0.1:${port}/`);
+  console.log(`Dealmate preview: http://localhost:${port}/`);
 });
