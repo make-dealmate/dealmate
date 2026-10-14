@@ -1,0 +1,7 @@
+.hero-description{max-width:480px}
+.content-source{border-top:1px solid var(--line);padding-block:34px 58px}
+.content-source h2{font-size:20px;line-height:1.6;letter-spacing:-.04em;margin-bottom:13px}
+.content-source p{font-size:13px;line-height:1.9;color:var(--muted);max-width:850px;margin-bottom:9px;word-break:keep-all}
+.content-source a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+.content-source .content-byline{font-size:11px;margin-top:18px}
+@media(max-width:600px){.content-source{padding-block:28px 42px}.content-source h2{font-size:18px}.content-source p{font-size:12px}}

@@ -4,8 +4,10 @@ import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Readable } from 'node:stream';
 import { handleAuth } from '../../server/auth.mjs';
+import { buildSite } from './build.mjs';
 
-const publicDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../public');
+await buildSite();
+const publicDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '../dist');
 const port = Number(process.argv[2] || 4174);
 const contentTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -13,11 +15,14 @@ const contentTypes = {
   '.js': 'text/javascript; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8'
 };
 
 http.createServer(async (request, response) => {
   if (request.url.split('?')[0] === '/api/auth') {
+    response.setHeader('X-Robots-Tag', 'noindex, nofollow');
     try {
       const init = { method: request.method, headers: request.headers };
       if (!['GET', 'HEAD'].includes(request.method)) {

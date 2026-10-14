@@ -18,6 +18,7 @@
 
 # Dependencies, caches, and operating-system files
 node_modules/
+site2/dist/
 .vercel/
 .venv/
 venv/

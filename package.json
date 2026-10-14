@@ -4,6 +4,7 @@
   "type": "module",
   "engines": { "node": "24.x" },
   "scripts": {
+    "build": "node site2/scripts/build.mjs",
     "dev": "node site2/scripts/preview.mjs",
     "test": "node --test tests/*.test.mjs"
   },

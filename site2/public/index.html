@@ -4,10 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fbfbf8">
-  <meta name="description" content="중고 구매의 비교부터 질문 준비까지 함께할 AI 메이트. Dealmate는 현재 아이디어 구체화 단계입니다.">
-  <title>Dealmate — 중고 구매에도, 내 편이 필요하니까</title>
+  <meta name="description" content="Dealmate(딜메이트)는 중고 매물 비교와 판매자 질문 정리를 돕는 AI 구매 도우미를 구상합니다. 현재 아이디어 구체화 단계이며, 서비스와 가격은 준비 중입니다.">
+  <title>Dealmate(딜메이트) | 중고 매물 비교·질문 정리를 위한 AI 구매 도우미</title>
+  <link rel="canonical" href="https://dealmate-blush.vercel.app/">
+  <!-- SEARCH_METADATA: generated from this page by scripts/build.mjs -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/search.css">
   <script src="/app.js" defer></script>
   <link rel="stylesheet" href="/auth.css">
   <script src="/auth.js" type="module"></script>
@@ -50,7 +53,7 @@
       <div class="hero-copy">
         <p class="eyebrow"><span class="tiny-square" aria-hidden="true"></span> YOUR NEXT BUY, WITH A MATE.</p>
         <h1 id="hero-title">중고 구매에도,<br><span class="blue-text">내 편</span>이<br class="hero-break"> 필요하니까<span class="title-period">.</span></h1>
-        <p class="hero-description">매물은 비교하고, 질문은 놓치지 않도록.<br>구매의 고민을 함께 정리할<br class="small-only"> AI 메이트를 준비하고 있어요.</p>
+        <p class="hero-description" id="service-definition">Dealmate(딜메이트)는 중고 매물 비교와 판매자에게 물어볼 질문 정리를 돕는 AI 구매 도우미를 구상하는 프로젝트입니다.</p>
         <a class="button" href="#journey">Dealmate의 구상 살펴보기 <span><svg aria-hidden="true"><use href="#arrow-diagonal"/></svg></span></a>
         <p class="hero-status"><span aria-hidden="true"></span>아이디어 구체화 단계 · 현재 정식 서비스 이용 불가</p>
       </div>
@@ -133,11 +136,19 @@
       <div class="container now-layout"><div><p class="eyebrow">04 — WORK IN PROGRESS</p><h2 id="now-title">아직, 준비 중이에요.<br>그래서 더 잘 듣고 싶어요.</h2><p>처음에는 중고 노트북 구매 예정자의 고민을 살펴보며,<br class="desktop-only"> 비교와 질문 정리에 무엇이 필요한지 검증할 계획이에요.</p><div class="now-badge"><span aria-hidden="true"></span>지금은 아이디어 구체화 단계</div></div><ol class="roadmap"><li class="current"><span class="roadmap-dot" aria-hidden="true"></span><div><small>NOW</small><h3>아이디어 구체화</h3><p>구매자의 문제와 이용 흐름 정리</p></div></li><li><span class="roadmap-dot" aria-hidden="true"></span><div><small>NEXT</small><h3>사용자 경험 검증</h3><p>구매 예정자의 의견을 살펴볼 계획</p></div></li><li><span class="roadmap-dot" aria-hidden="true"></span><div><small>THEN</small><h3>서비스 방향 구체화</h3><p>검증 결과에 따라 기능과 이용 조건 정리</p></div></li></ol></div>
     </section>
 
-    <section class="section container faq-section" aria-labelledby="faq-title"><div><p class="eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">궁금할 수 있는 것들.</h2></div><div class="faq-list">
+    <section class="section container faq-section" id="faq" aria-labelledby="faq-title"><div><p class="eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">Dealmate, 어떤 서비스인가요?</h2></div><div class="faq-list">
       <details><summary>지금 바로 사용할 수 있나요?<span aria-hidden="true">+</span></summary><p>아직 정식 서비스를 제공하지 않아요. 이 페이지는 아이디어 구체화 단계의 Dealmate가 준비하는 방향을 소개합니다. 공개 기능과 이용 조건은 검증 과정에서 정할 예정이에요.</p></details>
       <details><summary>판매자에게 대신 메시지를 보내나요?<span aria-hidden="true">+</span></summary><p>초기 구상은 문의·협상 초안을 준비하고 구매자가 검토해 직접 보내는 흐름이에요. 자동 메시지와 플랫폼 연동은 공식 허용 범위를 확보한 뒤 검토할 계획입니다.</p></details>
       <details><summary>구매와 결제는 누가 진행하나요?<span aria-hidden="true">+</span></summary><p>상품과 거래 조건을 확인하고, 최종 구매를 결정하고 결제하는 일은 구매자가 직접 진행해요. Dealmate는 판단에 필요한 정보와 질문을 정리하는 방향을 구상하고 있습니다.</p></details>
+      <details><summary>처음에는 누구를 위한 서비스를 준비하나요?<span aria-hidden="true">+</span></summary><p>중고 노트북 구매 예정자를 중심으로 준비하고 있어요. 매물 비교와 판매자 질문 정리에 어떤 도움이 필요한지 검증할 계획입니다.</p></details>
+      <details><summary>이용 가격은 얼마인가요?<span aria-hidden="true">+</span></summary><p>이용 가격과 조건은 아직 확정되지 않았어요. 사용자 경험을 검증한 뒤 정할 예정입니다.</p></details>
     </div></section>
+    <section class="container content-source" id="about" aria-labelledby="source-title">
+      <h2 id="source-title">이 소개는 어떤 내용을 바탕으로 하나요?</h2>
+      <p>Dealmate가 직접 정리한 <a href="#approach">서비스 구상</a>과 <a href="#journey">이용 흐름</a>을 소개합니다. 설명과 그림은 준비 중인 계획이며, 실제 매물이나 고객 검증 결과를 나타내지 않습니다.</p>
+      <p>홈페이지의 구현·변경 기록은 <a id="source-repository" href="https://github.com/make-dealmate/dealmate">Dealmate 공개 저장소</a>에서 확인할 수 있습니다.</p>
+      <p class="content-byline">작성·관리: <span id="content-author">Dealmate</span> · 내용 갱신: <time id="content-updated" datetime="2026-10-14">2026년 10월 14일</time></p>
+    </section>
   </main>
   <footer class="site-footer"><div class="container"><div class="footer-top"><a class="logo" href="#top" aria-label="Dealmate 처음으로"><img src="/favicon.svg" width="34" height="34" alt=""><span>dealmate.</span></a><p>중고 구매에도, 내 편이 필요하니까.</p><a class="top-link" href="#top">맨 위로 <svg aria-hidden="true"><use href="#arrow-diagonal"/></svg></a></div><div class="footer-bottom"><span>© 2026 Dealmate</span><span>아이디어 구체화 단계 · 서비스 준비 중</span></div></div></footer>
   <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><symbol id="arrow-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol><symbol id="arrow-right" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol><symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol><symbol id="compare" viewBox="0 0 24 24"><rect x="2.5" y="4" width="7" height="16" rx="1.5"/><rect x="14.5" y="4" width="7" height="16" rx="1.5"/><path d="M5 9h2m-2 5h2m10-5h2m-2 5h2"/></symbol><symbol id="message" viewBox="0 0 24 24"><path d="M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H9l-6 3V5a2 2 0 0 1 1-2Z"/><path d="M7 9h10M7 13h6"/></symbol><symbol id="list" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8m-8 5h8m-8 5h5"/></symbol></svg>
