@@ -4,7 +4,7 @@ import { generateKeyPairSync, sign } from 'node:crypto';
 import { OAuth2Client } from 'google-auth-library';
 import { createAuthHandler, CLIENT_ID } from '../server/auth.mjs';
 
-const origin = 'https://dealmate-blush.vercel.app';
+const origin = 'https://thedealmate.com';
 const { privateKey, publicKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
 const verifier = new OAuth2Client();
 const certificates = { test: publicKey.export({ type: 'spki', format: 'pem' }) };
@@ -112,4 +112,11 @@ test('invalid JSON, content types, methods and oversized payloads are rejected',
 });
 test('unregistered hostnames cannot create login sessions', async () => {
   assert.equal((await handler(new Request('https://attacker.example/api/auth'))).status, 403);
+});
+
+test('the domain transition keeps legacy reads while rejecting lookalike origins', async () => {
+  assert.equal((await handler(new Request('https://dealmate-blush.vercel.app/api/auth'))).status, 200);
+  for (const host of ['thedealmate.com.attacker.example', 'fake-thedealmate.com']) {
+    assert.equal((await handler(new Request(`https://${host}/api/auth`))).status, 403);
+  }
 });

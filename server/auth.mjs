@@ -4,8 +4,9 @@ import { OAuth2Client } from 'google-auth-library';
 // OAuth client IDs are public identifiers. No client secret is used by this flow.
 export const CLIENT_ID = '617699315025-c8i3s8vmltg1n86u88ifeq7ndv3c6vi5.apps.googleusercontent.com';
 const googleClient = new OAuth2Client();
-const productionOrigin = 'https://dealmate-blush.vercel.app';
-const defaultOrigins = [productionOrigin];
+const productionOrigin = 'https://thedealmate.com';
+// Keep the previous production origin available during the domain transition.
+const defaultOrigins = [productionOrigin, 'https://dealmate-blush.vercel.app'];
 if (!process.env.VERCEL) defaultOrigins.push('http://localhost:4174', 'http://127.0.0.1:4174');
 
 async function verifyGoogleToken(idToken) {

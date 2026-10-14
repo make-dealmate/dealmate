@@ -8,7 +8,7 @@ await buildSite();
 const folder = resolve('site2/dist');
 const html = await readFile(resolve(folder, 'index.html'), 'utf8');
 const graph = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
-const canonical = 'https://dealmate-blush.vercel.app/';
+const canonical = 'https://thedealmate.com/';
 
 test('one canonical is shared by sitemap, OG and site identities', async () => {
   assert.equal((html.match(/rel="canonical"/g) || []).length, 1);
@@ -18,6 +18,9 @@ test('one canonical is shared by sitemap, OG and site identities', async () => {
   const xml = await readFile(resolve(folder, 'sitemap.xml'), 'utf8');
   assert.deepEqual([...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]), [canonical]);
   assert.ok(!xml.includes('/api/'));
+  for (const content of [html, xml, await readFile(resolve(folder, 'robots.txt'), 'utf8'), await readFile(resolve(folder, 'llms.txt'), 'utf8')]) {
+    assert.ok(!content.includes('dealmate-blush.vercel.app'), 'Search documents must use only the new domain');
+  }
 });
 
 test('all five structured FAQs match the visible questions and answers', () => {
