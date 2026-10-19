@@ -37,7 +37,9 @@
     <p id="auth-description" class="auth-description">Google 계정으로 간편하게 로그인하세요.</p>
     <div id="auth-signed-out">
       <div id="google-signin" class="google-signin"></div>
-      <p class="auth-data-note">이름과 이메일로 로그인 상태를 확인합니다.<br>별도의 회원 명부에는 저장하지 않습니다.</p>
+      <!-- Official button artwork: https://developers.kakao.com/tool/resource/login -->
+      <button id="kakao-signin" class="kakao-signin" type="button" hidden><img src="/kakao-login.svg" width="224" height="46" alt="카카오 로그인"></button>
+      <p id="auth-data-note" class="auth-data-note">이름과 이메일로 로그인 상태를 확인합니다.<br>별도의 회원 명부에는 저장하지 않습니다.</p>
     </div>
     <div id="auth-signed-in" hidden>
       <div class="auth-account"><span class="auth-avatar" aria-hidden="true">D</span><div><strong id="auth-name"></strong><span id="auth-email"></span></div></div>

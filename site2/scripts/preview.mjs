@@ -21,7 +21,7 @@ const contentTypes = {
 };
 
 http.createServer(async (request, response) => {
-  if (request.url.split('?')[0] === '/api/auth') {
+  if (['/api/auth', '/api/kakao-callback'].includes(request.url.split('?')[0])) {
     response.setHeader('X-Robots-Tag', 'noindex, nofollow');
     try {
       const init = { method: request.method, headers: request.headers };

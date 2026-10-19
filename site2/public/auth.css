@@ -11,7 +11,10 @@ body:has(.auth-dialog[open]){overflow:hidden}
 .auth-dialog h2{font-size:34px;line-height:1.35;letter-spacing:-.055em}
 .auth-description{font-size:14px;color:var(--muted);margin:15px 0 28px;line-height:1.8}
 .google-signin{min-height:44px;display:flex;justify-content:center;max-width:100%;overflow:hidden}
+.kakao-signin{display:flex;align-items:center;justify-content:center;width:min(352px,100%);min-height:46px;margin:12px auto 0;padding:0;border:0;border-radius:8px;background:#fee500;cursor:pointer}
+.kakao-signin[hidden]{display:none}.kakao-signin img{display:block;max-width:100%;height:auto}.kakao-signin:hover{box-shadow:0 0 0 2px #19191926}.kakao-signin:focus-visible{outline:3px solid var(--blue);outline-offset:3px}.kakao-signin:disabled{opacity:.6;cursor:wait}
 .auth-data-note{font-size:11px;color:var(--muted);line-height:1.8;text-align:center;margin:16px 0 0}
+.auth-data-note{white-space:pre-line}
 .auth-stage{display:flex;gap:9px;padding-top:19px;border-top:1px solid var(--line);margin-top:22px;font-size:11px;color:var(--ink);line-height:1.8}
 .auth-stage>span{width:6px;height:6px;flex:none;border-radius:50%;background:var(--blue);margin-top:7px}
 .auth-stage small{color:var(--muted);font-size:11px}
@@ -22,6 +25,7 @@ body:has(.auth-dialog[open]){overflow:hidden}
 .auth-account{display:flex;align-items:center;gap:13px;border:1px solid #dae1f5;background:#edf1ff;padding:16px;border-radius:12px;margin-bottom:20px;min-width:0}
 .auth-avatar{display:grid;place-items:center;width:43px;height:43px;flex:none;border-radius:50%;background:var(--blue);color:white;font-size:19px;font-weight:700}
 .auth-account>div{min-width:0}.auth-account strong{display:block;font-size:15px;overflow-wrap:anywhere}.auth-account #auth-email{display:block;font-size:11px;color:var(--muted);word-break:break-all;margin-top:3px}
+.auth-account #auth-email[hidden]{display:none}
 .auth-primary{display:flex;justify-content:space-between;align-items:center;width:100%;border-radius:100px;background:var(--blue);color:white;padding:13px 20px;font-size:13px;font-weight:700}
 .auth-primary>span{font-size:20px}.auth-logout{display:block;margin:15px auto 0;background:transparent;color:var(--muted);font-size:12px;text-decoration:underline;padding:6px 12px}
 .auth-logout:disabled{opacity:.5;cursor:wait}

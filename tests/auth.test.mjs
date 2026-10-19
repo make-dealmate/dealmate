@@ -96,11 +96,11 @@ test('cross-site login and logout are blocked before verification', async () => 
   const request = new Request(`${origin}/api/auth?action=challenge`, { headers: { 'Sec-Fetch-Site': 'cross-site' } });
   assert.equal((await handler(request)).status, 403);
 });
-test('logout expires both cookies without sending tokens to the browser', async () => {
+test('logout expires session and both provider challenges without sending tokens to the browser', async () => {
   const response = await handler(req('DELETE'));
   assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), { user: null });
-  assert.equal(response.headers.getSetCookie().length, 2);
+  assert.equal(response.headers.getSetCookie().length, 3);
   for (const cookie of response.headers.getSetCookie()) assert.match(cookie, /Max-Age=0/);
 });
 test('invalid JSON, content types, methods and oversized payloads are rejected', async () => {

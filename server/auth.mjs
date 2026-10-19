@@ -1,5 +1,6 @@
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { OAuth2Client } from 'google-auth-library';
+import { createKakaoProvider, KAKAO_CALLBACK } from './kakao.mjs';
 
 // OAuth client IDs are public identifiers. No client secret is used by this flow.
 export const CLIENT_ID = '617699315025-c8i3s8vmltg1n86u88ifeq7ndv3c6vi5.apps.googleusercontent.com';
@@ -28,13 +29,14 @@ function equal(a, b) {
   return left.length === right.length && timingSafeEqual(left, right);
 }
 
-export function createAuthHandler({ verify = verifyGoogleToken, origins = defaultOrigins, now = () => Date.now() } = {}) {
+export function createAuthHandler({ verify = verifyGoogleToken, origins = defaultOrigins, now = () => Date.now(), kakao = createKakaoProvider() } = {}) {
   return async function handle(request) {
     const url = new URL(request.url);
     const secure = url.protocol === 'https:';
     const prefix = secure ? '__Host-dealmate_' : 'dealmate_';
     const sessionName = `${prefix}session`;
     const nonceName = `${prefix}nonce`;
+    const kakaoName = `${prefix}kakao_oauth`;
     const jar = cookies(request);
     const cookie = (name, value, age) => `${name}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${age}${secure ? '; Secure' : ''}`;
     const reply = (status, data, setCookies = []) => {
@@ -55,7 +57,28 @@ export function createAuthHandler({ verify = verifyGoogleToken, origins = defaul
     const publicUser = payload => ({ name: typeof payload.name === 'string' ? payload.name : '', email: payload.email });
 
     if (!origins.includes(url.origin)) return reply(403, { error: 'origin_not_allowed' });
+    if (url.pathname === KAKAO_CALLBACK) {
+      if (request.method !== 'GET') return reply(405, { error: 'method_not_allowed' });
+      const headers = new Headers({ 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer',
+        'X-Content-Type-Options': 'nosniff', 'Vary': 'Cookie' });
+      headers.append('Set-Cookie', cookie(kakaoName, '', 0));
+      let result = 'kakao-error';
+      try {
+        const session = await kakao.finish(url, jar[kakaoName]);
+        const age = Math.min(3600, Math.floor((session.expiresAt - now()) / 1000));
+        if (age <= 0) throw new Error('invalid_credential');
+        headers.append('Set-Cookie', cookie(sessionName, `kakao.${session.token}`, age));
+        headers.append('Set-Cookie', cookie(nonceName, '', 0));
+        result = 'kakao-success';
+      } catch (error) {
+        if (error.message === 'login_cancelled') result = 'kakao-cancelled';
+      }
+      // Fixed destination; never echo authorization codes or provider error text.
+      headers.set('Location', `/#auth=${result}`);
+      return new Response(null, { status: 303, headers });
+    }
     if (request.method === 'GET') {
+      if (url.searchParams.get('action') === 'providers') return reply(200, { google: true, kakao: kakao.enabled });
       if (url.searchParams.get('action') === 'challenge') {
         if (request.headers.get('sec-fetch-site') === 'cross-site') return reply(403, { error: 'origin_not_allowed' });
         const nonce = randomBytes(32).toString('base64url');
@@ -63,6 +86,11 @@ export function createAuthHandler({ verify = verifyGoogleToken, origins = defaul
       }
       if (!jar[sessionName]) return reply(200, { user: null });
       try {
+        if (jar[sessionName].startsWith('kakao.')) {
+          const payload = await kakao.verify(jar[sessionName].slice(6));
+          return reply(200, { user: { name: '', email: '' }, provider: 'kakao',
+            expiresAt: Math.min(payload.exp, payload.iat + 3600) * 1000 });
+        }
         const payload = await validate(jar[sessionName]);
         return reply(200, { user: publicUser(payload), expiresAt: payload.exp * 1000 });
       } catch {
@@ -80,7 +108,7 @@ export function createAuthHandler({ verify = verifyGoogleToken, origins = defaul
       return reply(403, { error: 'origin_not_allowed' });
     }
     if (request.method === 'DELETE') {
-      return reply(200, { user: null }, [clearSession(), cookie(nonceName, '', 0)]);
+      return reply(200, { user: null }, [clearSession(), cookie(nonceName, '', 0), cookie(kakaoName, '', 0)]);
     }
     if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') {
       return reply(415, { error: 'json_required' });
@@ -103,6 +131,13 @@ export function createAuthHandler({ verify = verifyGoogleToken, origins = defaul
       body = JSON.parse(Buffer.concat(chunks).toString('utf8'));
     } catch {
       return reply(400, { error: 'invalid_request' });
+    }
+    if (url.searchParams.get('action') === 'kakao-start') {
+      if (!kakao.enabled) return reply(503, { error: 'kakao_not_configured' });
+      // The legacy domain is read-only for Kakao; use the canonical site or registered local preview.
+      if (url.origin === 'https://dealmate-blush.vercel.app') return reply(403, { error: 'origin_not_allowed' });
+      const start = kakao.start(url.origin);
+      return reply(200, { redirect: start.url }, [cookie(kakaoName, start.transaction, 600)]);
     }
     if (!body || !/^[A-Za-z0-9_-]{43}$/.test(jar[nonceName] || '')) return reply(401, { error: 'login_expired' });
     try {
